@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import numpy as np
 from typing import List
 
@@ -51,14 +50,17 @@ class LinearRegression:
 
         if x.ndim == 1:
             x = x.reshape(-1,1)
-        
+
         x = np.hstack((np.ones((x.shape[0],1)),x)) # add intercept term
 
+        if x.shape[1] != len(self.coef_) + 1:  # +1 for intercept
+            raise ValueError("Dimension Error: Input dimensions do not match the model's coefficients.")
+        
         return x @ np.concatenate(([self.intercept_],self.coef_))
 
 if __name__ == "__main__":
-    x = np.array([[1, 2], [2, 1], [3, 3]])  # 3 samples, 2 features
-    y = np.array([5, 7, 9])  # Target values
+    x = np.array([1,2,3,4,5,6])  
+    y = np.array([3,5,4,6,5,6])  # Target values
 
     # Initialize and train the model
     model = LinearRegression()
@@ -69,7 +71,7 @@ if __name__ == "__main__":
     print(f"Coefficients: {model.coef_}")
 
     # Make predictions on new data
-    x_new = np.array([[4, 5], [5, 6]])
+    x_new = np.array([7,8])
     predictions = model.predict(x_new)
     print(f"Predictions: {predictions}")
     
